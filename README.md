@@ -14,7 +14,7 @@
 
 ## 🛠 技术栈
 
-- **前端框架**: Next.js 14 + TypeScript
+- **前端框架**: Next.js + TypeScript
 - **样式**: Tailwind CSS
 - **钱包集成**: wagmi + RainbowKit
 - **状态管理**: Zustand

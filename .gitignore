@@ -1,2 +1,6 @@
 .next
 node_modules
+
+.*.local
+
+ui.html
