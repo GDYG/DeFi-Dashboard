@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DApp 面板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --accent-color: #ff007a;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #21262d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --border-color: #30363d;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .wallet-btn {
+            background: linear-gradient(135deg, var(--accent-color), #ff4081);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .wallet-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .wallet-connected {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Main Content */
+        .main {
+            padding: 32px 0;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        /* Assets Section */
+        .asset-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .asset-item:last-child {
+            border-bottom: none;
+        }
+
+        .asset-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .asset-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), #ff4081);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .asset-details h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .asset-details p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .asset-value {
+            text-align: right;
+        }
+
+        .asset-amount {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .asset-usd {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Transactions Section */
+        .transactions {
+            grid-column: 1 / -1;
+        }
+
+        .transaction-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto auto;
+            gap: 16px;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .tx-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--success-color);
+        }
+
+        .tx-status.pending {
+            background-color: var(--warning-color);
+        }
+
+        .tx-status.failed {
+            background-color: var(--error-color);
+        }
+
+        .tx-hash {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .tx-hash:hover {
+            text-decoration: underline;
+        }
+
+        .tx-amount {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .tx-time {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-top: 2px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .transaction-item {
+                grid-template-columns: auto 1fr;
+                gap: 12px;
+            }
+
+            .tx-details {
+                grid-column: 1 / -1;
+                display: flex;
+                justify-content: space-between;
+                margin-top: 8px;
+            }
+
+            .wallet-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .asset-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .asset-value {
+                text-align: left;
+                width: 100%;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">DeFi Dashboard</div>
+                <div class="header-actions">
+                    <button class="theme-toggle" onclick="toggleTheme()">
+                        <span id="theme-icon">🌙</span>
+                    </button>
+                    <button class="wallet-btn" id="walletBtn" onclick="connectWallet()">
+                        连接钱包
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="dashboard">
+                <!-- Assets Card -->
+                <div class="card fade-in">
+                    <h2 class="card-title">我的资产</h2>
+                    <div id="assetsContent">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            请先连接钱包
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portfolio Summary -->
+                <div class="card fade-in">
+                    <h2 class="card-title">投资组合</h2>
+                    <div id="portfolioContent">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            请先连接钱包
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transactions Card -->
+                <div class="card transactions fade-in">
+                    <h2 class="card-title">交易记录</h2>
+                    <div id="transactionsContent">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            请先连接钱包
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Theme Management
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize theme
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+            }
+        }
+
+        // Wallet Connection
+        let isConnected = false;
+        let walletAddress = '';
+
+        async function connectWallet() {
+            const walletBtn = document.getElementById('walletBtn');
+            
+            if (isConnected) {
+                // Disconnect wallet
+                isConnected = false;
+                walletAddress = '';
+                walletBtn.textContent = '连接钱包';
+                walletBtn.classList.remove('wallet-connected');
+                showDisconnectedState();
+                return;
+            }
+
+            try {
+                // Check if MetaMask is installed
+                if (typeof window.ethereum !== 'undefined') {
+                    // Request account access
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_requestAccounts'
+                    });
+                    
+                    if (accounts.length > 0) {
+                        isConnected = true;
+                        walletAddress = accounts[0];
+                        walletBtn.textContent = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
+                        walletBtn.classList.add('wallet-connected');
+                        loadWalletData();
+                    }
+                } else {
+                    alert('请安装 MetaMask 钱包');
+                }
+            } catch (error) {
+                console.error('连接钱包失败:', error);
+                alert('连接钱包失败，请重试');
+            }
+        }
+
+        // Mock data for demonstration
+        function loadWalletData() {
+            loadAssets();
+            loadPortfolio();
+            loadTransactions();
+        }
+
+        function loadAssets() {
+            const assetsContent = document.getElementById('assetsContent');
+            const mockAssets = [
+                { symbol: 'ETH', name: 'Ethereum', amount: '2.5', usd: '$4,250.00', icon: 'Ξ' },
+                { symbol: 'USDC', name: 'USD Coin', amount: '1,500', usd: '$1,500.00', icon: '$' },
+                { symbol: 'UNI', name: 'Uniswap', amount: '150', usd: '$900.00', icon: '🦄' },
+                { symbol: 'LINK', name: 'Chainlink', amount: '75', usd: '$525.00', icon: '🔗' }
+            ];
+
+            assetsContent.innerHTML = mockAssets.map(asset => `
+                <div class="asset-item">
+                    <div class="asset-info">
+                        <div class="asset-icon">${asset.icon}</div>
+                        <div class="asset-details">
+                            <h4>${asset.symbol}</h4>
+                            <p>${asset.name}</p>
+                        </div>
+                    </div>
+                    <div class="asset-value">
+                        <div class="asset-amount">${asset.amount}</div>
+                        <div class="asset-usd">${asset.usd}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadPortfolio() {
+            const portfolioContent = document.getElementById('portfolioContent');
+            portfolioContent.innerHTML = `
+                <div class="asset-item">
+                    <div class="asset-info">
+                        <div class="asset-icon">💰</div>
+                        <div class="asset-details">
+                            <h4>总价值</h4>
+                            <p>Portfolio Value</p>
+                        </div>
+                    </div>
+                    <div class="asset-value">
+                        <div class="asset-amount">$7,175.00</div>
+                        <div class="asset-usd" style="color: var(--success-color);">+5.2% (24h)</div>
+                    </div>
+                </div>
+                <div class="asset-item">
+                    <div class="asset-info">
+                        <div class="asset-icon">📈</div>
+                        <div class="asset-details">
+                            <h4>今日收益</h4>
+                            <p>Daily P&L</p>
+                        </div>
+                    </div>
+                    <div class="asset-value">
+                        <div class="asset-amount" style="color: var(--success-color);">+$354.20</div>
+                        <div class="asset-usd">+5.2%</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadTransactions() {
+            const transactionsContent = document.getElementById('transactionsContent');
+            const mockTransactions = [
+                {
+                    hash: '0x1a2b3c4d5e6f...',
+                    type: 'Swap',
+                    amount: '-1.5 ETH',
+                    status: 'success',
+                    time: '2 分钟前'
+                },
+                {
+                    hash: '0x2b3c4d5e6f7a...',
+                    type: 'Transfer',
+                    amount: '+500 USDC',
+                    status: 'success',
+                    time: '1 小时前'
+                },
+                {
+                    hash: '0x3c4d5e6f7a8b...',
+                    type: 'Approve',
+                    amount: '0 ETH',
+                    status: 'pending',
+                    time: '2 小时前'
+                },
+                {
+                    hash: '0x4d5e6f7a8b9c...',
+                    type: 'Swap',
+                    amount: '+75 UNI',
+                    status: 'success',
+                    time: '1 天前'
+                }
+            ];
+
+            transactionsContent.innerHTML = mockTransactions.map(tx => `
+                <div class="transaction-item">
+                    <div class="tx-status ${tx.status}"></div>
+                    <div>
+                        <a href="#" class="tx-hash">${tx.hash}</a>
+                        <div style="font-size: 14px; color: var(--text-secondary);">${tx.type}</div>
+                    </div>
+                    <div class="tx-amount">${tx.amount}</div>
+                    <div class="tx-time">${tx.time}</div>
+                    <div class="tx-details">
+                        <span style="font-size: 12px; color: var(--text-secondary);">查看详情</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showDisconnectedState() {
+            const loadingHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    请先连接钱包
+                </div>
+            `;
+            
+            document.getElementById('assetsContent').innerHTML = loadingHTML;
+            document.getElementById('portfolioContent').innerHTML = loadingHTML;
+            document.getElementById('transactionsContent').innerHTML = loadingHTML;
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            
+            // Check if wallet is already connected
+            if (typeof window.ethereum !== 'undefined') {
+                window.ethereum.request({ method: 'eth_accounts' })
+                    .then(accounts => {
+                        if (accounts.length > 0) {
+                            isConnected = true;
+                            walletAddress = accounts[0];
+                            const walletBtn = document.getElementById('walletBtn');
+                            walletBtn.textContent = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
+                            walletBtn.classList.add('wallet-connected');
+                            loadWalletData();
+                        }
+                    });
+            }
+        });
+
+        // Handle account changes
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', function (accounts) {
+                if (accounts.length === 0) {
+                    isConnected = false;
+                    walletAddress = '';
+                    const walletBtn = document.getElementById('walletBtn');
+                    walletBtn.textContent = '连接钱包';
+                    walletBtn.classList.remove('wallet-connected');
+                    showDisconnectedState();
+                } else {
+                    walletAddress = accounts[0];
+                    const walletBtn = document.getElementById('walletBtn');
+                    walletBtn.textContent = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
+                    loadWalletData();
+                }
+            });
+        }
+    </script>
+</body>
+</html> 
