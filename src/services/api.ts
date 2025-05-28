@@ -157,7 +157,7 @@ export class EtherscanService {
 
   constructor() {
     this.client = new ApiClient(API_ENDPOINTS.ETHERSCAN)
-    this.apiKey = process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY || ''
+    this.apiKey = process.env.ETHERSCAN_API_KEY || ''
     
     if (!this.apiKey) {
       console.warn('⚠️ Etherscan API Key 未配置，将使用免费限制版本')

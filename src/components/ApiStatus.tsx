@@ -23,7 +23,7 @@ export function ApiStatus({ className = '' }: ApiStatusProps) {
 
   const checkApiStatus = async () => {
     // 检查环境变量
-    const etherscanKey = process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY
+    const etherscanKey = process.env.ETHERSCAN_API_KEY
     const coingeckoKey = process.env.NEXT_PUBLIC_COINGECKO_API_KEY
 
     setStatus({

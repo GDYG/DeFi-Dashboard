@@ -32,7 +32,7 @@ export default function Home() {
   // 如果钱包未连接，显示连接提示
   if (!isConnected) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+      <div className="flex-1 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">

@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { WagmiProvider, createConfig, http } from 'wagmi'
+import { WagmiProvider, http } from 'wagmi'
 import { sepolia, mainnet } from 'wagmi/chains'
 import { RainbowKitProvider, getDefaultConfig } from '@rainbow-me/rainbowkit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -9,7 +9,7 @@ import '@rainbow-me/rainbowkit/styles.css'
 
 // Create wagmi config using the new v2 API
 const config = getDefaultConfig({
-  appName: 'DeFi Dashboard',
+  appName: 'DeFi-Dashboard',
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || 'demo-project-id',
   chains: [sepolia, mainnet],
   transports: {
