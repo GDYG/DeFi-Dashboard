@@ -88,7 +88,7 @@ export class CoinGeckoService {
       }
 
       // 如果有API Key，添加到参数中
-      const apiKey = process.env.NEXT_PUBLIC_COINGECKO_API_KEY
+      const apiKey = process.env.COINGECKO_API_KEY
       if (apiKey) {
         params.x_cg_demo_api_key = apiKey
       }
@@ -134,7 +134,7 @@ export class CoinGeckoService {
         include_24hr_change: 'true'
       }
 
-      const apiKey = process.env.NEXT_PUBLIC_COINGECKO_API_KEY
+      const apiKey = process.env.COINGECKO_API_KEY
       if (apiKey) {
         params.x_cg_demo_api_key = apiKey
       }

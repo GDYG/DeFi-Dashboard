@@ -52,13 +52,13 @@ cp env.example .env.local
 NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_wallet_connect_project_id
 
 # Alchemy API Key (必需)
-NEXT_PUBLIC_ALCHEMY_API_KEY=your_alchemy_api_key
+ALCHEMY_API_KEY=your_alchemy_api_key
 
 # Etherscan API Key (必需)
 ETHERSCAN_API_KEY=your_etherscan_api_key
 
 # CoinGecko API Key (可选)
-NEXT_PUBLIC_COINGECKO_API_KEY=your_coingecko_api_key
+COINGECKO_API_KEY=your_coingecko_api_key
 ```
 
 ### 4. 获取 API 密钥

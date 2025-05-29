@@ -28,14 +28,14 @@ export const SUPPORTED_CHAINS = {
     id: 1,
     name: 'Ethereum',
     symbol: 'ETH',
-    rpcUrl: `${API_ENDPOINTS.ALCHEMY}/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+    rpcUrl: `${API_ENDPOINTS.ALCHEMY}/${process.env.ALCHEMY_API_KEY}`,
     blockExplorer: 'https://etherscan.io'
   },
   SEPOLIA: {
     id: 11155111,
     name: 'Sepolia',
     symbol: 'ETH',
-    rpcUrl: `${API_ENDPOINTS.ALCHEMY}/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+    rpcUrl: `${API_ENDPOINTS.ALCHEMY}/${process.env.ALCHEMY_API_KEY}`,
     blockExplorer: 'https://sepolia.etherscan.io'
   }
 } as const

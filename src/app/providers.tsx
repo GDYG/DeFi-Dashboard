@@ -14,13 +14,13 @@ const config = getDefaultConfig({
   chains: [sepolia, mainnet],
   transports: {
     [sepolia.id]: http(
-      process.env.NEXT_PUBLIC_ALCHEMY_API_KEY 
-        ? `https://eth-sepolia.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
+      process.env.ALCHEMY_API_KEY 
+        ? `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`
         : undefined
     ),
     [mainnet.id]: http(
-      process.env.NEXT_PUBLIC_ALCHEMY_API_KEY 
-        ? `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
+      process.env.ALCHEMY_API_KEY 
+        ? `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`
         : undefined
     ),
   },
