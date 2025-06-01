@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { realDataService } from '@/services/api'
+import { clientApiService } from '@/services/clientApi'
 
 interface Asset {
   symbol: string
@@ -151,7 +151,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       setLoading('assets', true)
       setError(null)
       
-      const assets = await realDataService.getUserAssets(address)
+      const assets = await clientApiService.getUserAssets(address)
       setAssets(assets)
     } catch (error) {
       console.error('Failed to fetch assets:', error)
@@ -169,7 +169,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     try {
       setLoading('transactions', true)
       
-      const transactions = await realDataService.getUserTransactions(address)
+      const transactions = await clientApiService.getUserTransactions(address)
       setTransactions(transactions)
     } catch (error) {
       console.error('Failed to fetch transactions:', error)

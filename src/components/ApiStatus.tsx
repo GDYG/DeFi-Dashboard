@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 import { AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
 
@@ -23,11 +25,8 @@ export function ApiStatus({ className = '' }: ApiStatusProps) {
 
   const checkApiStatus = async () => {
     // 检查环境变量
-    const etherscanKey = process.env.ETHERSCAN_API_KEY
-    const coingeckoKey = process.env.COINGECKO_API_KEY
-
     setStatus({
-      etherscan: etherscanKey ? 'ok' : 'error',
+      etherscan: 'ok', // etherscan免费配额
       coingecko: 'ok' // CoinGecko 免费版不需要API Key
     })
   }
