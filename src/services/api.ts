@@ -57,14 +57,16 @@ class ApiClient {
         url.searchParams.append(key, value)
       })
     }
-
     const proxyAgent = new HttpsProxyAgent('http://127.0.0.1:7890');
-    const response = await fetch(url.toString(), {
+    const _rest = process.env.NODE_ENV === 'production' ? {} : {
       agent: proxyAgent,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
         'Accept': 'application/json',
       }
+    }
+    const response = await fetch(url.toString(), {
+      ..._rest,
     })
 
     if (!response.ok) {
