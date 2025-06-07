@@ -16,6 +16,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "hardhat:node": "npx hardhat node",
+    "hardhat:deploy-localhost": "npx hardhat run scripts/deploy.js --network localhost",
     "hardhat:compile": "npx hardhat compile",
     "hardhat:deploy": "npx hardhat run scripts/deploy.js --network sepolia",
     "hardhat:test": "npx hardhat test"
