@@ -14,11 +14,11 @@ module.exports = {
   },
   networks: {
     hardhat: {
-      chainId: 31337,
+      chainId: process.env.HARDHAT_CHAIN_ID,
     },
     localhost: {
       url: "http://127.0.0.1:8545",
-      chainId: 31337
+      chainId: process.env.HARDHAT_CHAIN_ID
     },
     // sepolia: {
     //   url: process.env.SEPOLIA_RPC_URL,
