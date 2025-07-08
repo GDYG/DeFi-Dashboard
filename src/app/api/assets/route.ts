@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { EtherscanService, CoinGeckoService } from '@/services/api'
+import {  CoinGeckoService } from '@/services/coinGeckoService'
+import { createStrategyOnClient } from '@/services/ethServiceFactory'
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const address = searchParams.get('address')
+    const chainId = searchParams.get("chainId")
 
-    if (!address) {
+    if (!address || !chainId) {
       return NextResponse.json(
         { error: '地址参数是必需的' },
         { status: 400 }
@@ -14,11 +16,11 @@ export async function GET(request: NextRequest) {
     }
 
     // 在服务端创建服务实例，API密钥只在服务端使用
-    const etherscanService = new EtherscanService()
+    const ethService = await createStrategyOnClient(+chainId)
     const coinGeckoService = new CoinGeckoService()
 
     // 获取ETH余额
-    const ethBalance = await etherscanService.getAccountBalance(address)
+    const ethBalance = await ethService.getAccountBalance(address)
     const ethBalanceInEther = parseFloat(ethBalance) / 1e18
 
     // 获取ETH价格
@@ -33,9 +35,9 @@ export async function GET(request: NextRequest) {
 
     // 获取代币余额
     const tokenBalances = await Promise.all([
-      etherscanService.getTokenBalance(address, tokenContracts.USDC),
-      etherscanService.getTokenBalance(address, tokenContracts.UNI),
-      etherscanService.getTokenBalance(address, tokenContracts.LINK),
+      ethService.getTokenBalance(address, tokenContracts.USDC),
+      ethService.getTokenBalance(address, tokenContracts.UNI),
+      ethService.getTokenBalance(address, tokenContracts.LINK),
     ])
 
     // 获取代币价格

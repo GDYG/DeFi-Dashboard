@@ -145,13 +145,14 @@ export const useWalletStore = create<WalletState>((set, get) => ({
 
   // 获取资产数据
   fetchAssets: async (address: string) => {
-    const { setAssets, setLoading, setError } = get()
-    
+    const { setAssets, setLoading, setError, chainId } = get()
+
     try {
       setLoading('assets', true)
       setError(null)
       
-      const assets = await clientApiService.getUserAssets(address)
+      const assets = await clientApiService.getUserAssets(address, chainId)
+      
       setAssets(assets)
     } catch (error) {
       console.error('Failed to fetch assets:', error)
@@ -164,12 +165,12 @@ export const useWalletStore = create<WalletState>((set, get) => ({
 
   // 获取交易数据
   fetchTransactions: async (address: string) => {
-    const { setTransactions, setLoading, setError } = get()
+    const { setTransactions, setLoading, setError, chainId } = get()
     
     try {
       setLoading('transactions', true)
       
-      const transactions = await clientApiService.getUserTransactions(address)
+      const transactions = await clientApiService.getUserTransactions(address, chainId)
       setTransactions(transactions)
     } catch (error) {
       console.error('Failed to fetch transactions:', error)

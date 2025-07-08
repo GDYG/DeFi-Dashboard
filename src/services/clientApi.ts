@@ -4,17 +4,17 @@ export class ClientApiService {
 
   constructor() {
     this.baseUrl = process.env.NODE_ENV === 'production' 
-      ? process.env.NEXT_PUBLIC_APP_URL || '' 
+      ? process.env.NEXT_PUBLIC_APP_URL || ''
       : 'http://localhost:3000'
   }
 
   /**
    * 获取用户资产数据
    */
-  async getUserAssets(address: string) {
+  async getUserAssets(address: string, chainId: number | null) {
     try {
       const ret = await fetch(
-        `${this.baseUrl}/api/assets?address=${encodeURIComponent(address)}`
+        `${this.baseUrl}/api/assets?address=${encodeURIComponent(address)}&chainId=${chainId}`
       )
       const data = await ret.json()
       return data.assets || []
@@ -27,10 +27,10 @@ export class ClientApiService {
   /**
    * 获取用户交易记录
    */
-  async getUserTransactions(address: string) {
+  async getUserTransactions(address: string, chainId: number | null) {
     try {
       const ret = await fetch(
-        `${this.baseUrl}/api/transactions?address=${encodeURIComponent(address)}`
+        `${this.baseUrl}/api/transactions?address=${encodeURIComponent(address)}&chainId=${chainId}`
       )
       const data = await ret.json()
 
@@ -90,10 +90,10 @@ export class ClientApiService {
   /**
    * 获取账户ETH余额
    */
-  async getAccountBalance(address: string) {
+  async getAccountBalance(address: string, chainId: number | null) {
     try {
       const ret = await fetch(
-        `${this.baseUrl}/api/balance?address=${encodeURIComponent(address)}`
+        `${this.baseUrl}/api/balance?address=${encodeURIComponent(address)}&chainId=${chainId}`
       )
       const data = await ret.json()
       return data.balance || '0'
@@ -106,10 +106,10 @@ export class ClientApiService {
   /**
    * 获取代币余额
    */
-  async getTokenBalance(address: string, contractAddress: string) {
+  async getTokenBalance(address: string, contractAddress: string, chainId: number | null) {
     try {
       const ret = await fetch(
-        `${this.baseUrl}/api/balance?address=${encodeURIComponent(address)}&contractAddress=${encodeURIComponent(contractAddress)}`
+        `${this.baseUrl}/api/balance?address=${encodeURIComponent(address)}&contractAddress=${encodeURIComponent(contractAddress)}&chainId=${chainId}`
       )
       const data = await ret.json()
       return data.balance || '0'

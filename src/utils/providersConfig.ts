@@ -3,6 +3,7 @@ import { defineChain } from 'viem';
 import { mainnet, sepolia } from 'wagmi/chains';
 import { http } from 'wagmi';
 import { QueryClient } from '@tanstack/react-query';
+import { API_ENDPOINTS } from './constants';
 
 const hardhatLocal = defineChain({
   id: Number(process.env.HARDHAT_CHAIN_ID) || 31337,
@@ -14,8 +15,8 @@ const hardhatLocal = defineChain({
     symbol: 'ETH',
   },
   rpcUrls: {
-    default: { http: ['http://127.0.0.1:8545'] },
-    public: { http: ['http://127.0.0.1:8545'] },
+    default: { http: [API_ENDPOINTS.LOCAL] },
+    public: { http: [API_ENDPOINTS.LOCAL] },
   },
 })
 
@@ -27,15 +28,15 @@ const wagmiConfig = getDefaultConfig({
   transports: {
     [sepolia.id]: http(
       process.env.ALCHEMY_API_KEY 
-        ? `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`
+        ? `${API_ENDPOINTS.ALCHEMY_SEPOLIA}/${process.env.ALCHEMY_API_KEY}`
         : undefined
     ),
     [mainnet.id]: http(
       process.env.ALCHEMY_API_KEY 
-        ? `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`
+        ? `${API_ENDPOINTS.ALCHEMY_MAINNET}/${process.env.ALCHEMY_API_KEY}`
         : undefined
     ),
-    [hardhatLocal.id]: http('http://127.0.0.1:8545'), // 添加localhost RPC
+    [hardhatLocal.id]: http(API_ENDPOINTS.LOCAL), // 添加localhost RPC
   },
   ssr: true,
 })

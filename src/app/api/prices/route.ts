@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { CoinGeckoService } from '@/services/api'
+import { CoinGeckoService } from '@/services/coinGeckoService'
 
 export async function GET(request: NextRequest) {
   try {

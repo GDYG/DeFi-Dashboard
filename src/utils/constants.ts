@@ -1,7 +1,10 @@
 // API 端点配置
 export const API_ENDPOINTS = {
-  COINGECKO: 'https://api.coingecko.com/api/v3/',
-  ETHERSCAN: process.env.ETHERSCAN_NETWORK || 'https://api-sepolia.etherscan.io/api',
-  ALCHEMY: 'https://eth-mainnet.g.alchemy.com/v2',
-  INFURA: 'https://mainnet.infura.io/v3'
+  LOCAL: process.env.NEXT_PUBLIC_LOCALHOST!,
+  COINGECKO: process.env.NEXT_PUBLIC_COINGECKO_NETWORK!,
+  ETHERSCAN: process.env.NEXT_PUBLIC_ETHERSCAN_NETWORK!,
+  ALCHEMY_MAINNET: process.env.NEXT_PUBLIC_ALCHEMY_MAINNET!,
+  ALCHEMY_SEPOLIA: process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA!,
+  INFURA_MAINNET: process.env.NEXT_PUBLIC_INFURA_MAINNET!,
+  INFURA_SEPOLIA: process.env.NEXT_PUBLIC_INFURA_SEPOLIA!
 } as const

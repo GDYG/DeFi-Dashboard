@@ -1,8 +1,10 @@
-require("dotenv").config();
+// 默认只支持加载.env文件，设置同时加载.env.local文件
+require("./loadEnv").loadEnvFiles();
 require("@nomicfoundation/hardhat-toolbox");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
+  defaultNetwork: "hardhat",
   solidity: {
     version: "0.8.20",
     settings: {
@@ -14,17 +16,22 @@ module.exports = {
   },
   networks: {
     hardhat: {
-      chainId: process.env.HARDHAT_CHAIN_ID,
+      chainId: parseInt(process.env.NEXT_PUBLIC_HARDHAT_CHAIN_ID || "31337", 10)
     },
     localhost: {
-      url: "http://127.0.0.1:8545",
-      chainId: process.env.HARDHAT_CHAIN_ID
+      url: process.env.NEXT_PUBLIC_LOCALHOST,
+      chainId: parseInt(process.env.NEXT_PUBLIC_HARDHAT_CHAIN_ID || "31337", 10)
     },
-    // sepolia: {
-    //   url: process.env.SEPOLIA_RPC_URL,
-    //   accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-    //   chainId: 11155111,
-    // },
+    sepolia: {
+      url: process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA + process.env.ALCHEMY_API_KEY,
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      chainId: 11155111,
+    },
+    mainnet: {
+      url: process.env.NEXT_PUBLIC_ALCHEMY_MAINNET + process.env.ALCHEMY_API_KEY,
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      chainId: 1,
+    },
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,

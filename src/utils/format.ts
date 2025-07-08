@@ -142,3 +142,38 @@ export function isValidAddress(address: string): boolean {
 export function isValidTxHash(hash: string): boolean {
   return /^0x[a-fA-F0-9]{64}$/.test(hash)
 } 
+
+/**
+ * 格式化时间为相对时间
+ */
+export const formatTimeAgo = (timestamp: number): string => {
+      const now = Date.now()
+      const diffInSeconds = Math.floor((now - timestamp) / 1000)
+
+      if (diffInSeconds < 60) {
+        return `${diffInSeconds} 秒前`
+      }
+
+      const diffInMinutes = Math.floor(diffInSeconds / 60)
+      if (diffInMinutes < 60) {
+        return `${diffInMinutes} 分钟前`
+      }
+
+      const diffInHours = Math.floor(diffInMinutes / 60)
+      if (diffInHours < 24) {
+        return `${diffInHours} 小时前`
+      }
+
+      const diffInDays = Math.floor(diffInHours / 24)
+      if (diffInDays < 30) {
+        return `${diffInDays} 天前`
+      }
+
+      const diffInMonths = Math.floor(diffInDays / 30)
+      if (diffInMonths < 12) {
+        return `${diffInMonths} 个月前`
+      }
+
+      const diffInYears = Math.floor(diffInMonths / 12)
+      return `${diffInYears} 年前`
+}

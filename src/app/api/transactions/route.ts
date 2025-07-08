@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { EtherscanService } from '@/services/api'
+import { createStrategyOnClient } from '@/services/ethServiceFactory'
+import { formatTimeAgo } from '@/utils/format'
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const address = searchParams.get('address')
+    const chainId = searchParams.get('chainId')
 
-    if (!address) {
+    if (!address || !chainId) {
       return NextResponse.json(
         { error: '地址参数是必需的' },
         { status: 400 }
@@ -14,46 +16,13 @@ export async function GET(request: NextRequest) {
     }
 
     // 在服务端创建服务实例，API密钥只在服务端使用
-    const etherscanService = new EtherscanService()
+    const ethService = await createStrategyOnClient(+chainId)
 
     // 获取ETH交易记录
-    const ethTransactions = await etherscanService.getAccountTransactions(address, 1, 5)
+    const ethTransactions = await ethService.getAccountTransactions(address, 1, 5)
     
     // 获取代币转账记录
-    const tokenTransfers = await etherscanService.getTokenTransfers(address, undefined, 1, 5)
-
-    // 格式化时间为相对时间
-    const formatTimeAgo = (timestamp: number): string => {
-      const now = Date.now()
-      const diffInSeconds = Math.floor((now - timestamp) / 1000)
-
-      if (diffInSeconds < 60) {
-        return `${diffInSeconds} 秒前`
-      }
-
-      const diffInMinutes = Math.floor(diffInSeconds / 60)
-      if (diffInMinutes < 60) {
-        return `${diffInMinutes} 分钟前`
-      }
-
-      const diffInHours = Math.floor(diffInMinutes / 60)
-      if (diffInHours < 24) {
-        return `${diffInHours} 小时前`
-      }
-
-      const diffInDays = Math.floor(diffInHours / 24)
-      if (diffInDays < 30) {
-        return `${diffInDays} 天前`
-      }
-
-      const diffInMonths = Math.floor(diffInDays / 30)
-      if (diffInMonths < 12) {
-        return `${diffInMonths} 个月前`
-      }
-
-      const diffInYears = Math.floor(diffInMonths / 12)
-      return `${diffInYears} 年前`
-    }
+    const tokenTransfers = await ethService.getTokenTransfers(address, 1, 5, undefined)
 
     // 合并并格式化交易记录
     const allTransactions = [
