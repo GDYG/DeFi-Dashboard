@@ -1,5 +1,4 @@
 import { ApiClient } from './api'
-import { API_ENDPOINTS } from '@/utils/constants'
 import { EtherscanResponse, EtherscanTokenTransfer, EtherscanTransaction, IEthProviderStrategy } from './IEthProviderStrategy'
 
 /**
@@ -10,8 +9,8 @@ export class EtherscanStrategy implements IEthProviderStrategy {
   private client: ApiClient
   private apiKey: string
 
-  constructor() {
-    this.client = new ApiClient(API_ENDPOINTS.ETHERSCAN)
+  constructor(network: string) {
+    this.client = new ApiClient(network)
     this.apiKey = process.env.ETHERSCAN_API_KEY || ''
     
     if (!this.apiKey) {

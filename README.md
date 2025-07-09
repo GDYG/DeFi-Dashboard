@@ -42,7 +42,7 @@ npm install
 复制环境变量示例文件：
 
 ```bash
-cp env.example .env.local
+cp env.example中的.env.local部分到 .env.local
 ```
 
 编辑 `.env.local` 文件，填入必要的 API 密钥：
@@ -57,8 +57,14 @@ ALCHEMY_API_KEY=your_alchemy_api_key
 # Etherscan API Key (必需)
 ETHERSCAN_API_KEY=your_etherscan_api_key
 
-# CoinGecko API Key (可选)
+# CoinGecko API Key (必需)
 COINGECKO_API_KEY=your_coingecko_api_key
+
+# PRIVATE_KEY（必需）
+钱包私钥，如果是本地Hardhat网路，启动yarn run hardhat:node后，选择Account #0的Private Key就好，同时需要在metamask上导入钱包账户，其他测试网络或者主网请在metamask上自行获取
+
+# Infura API KEY（可选）
+INFURA_API_KEY=your_infura_api_key
 ```
 
 ### 4. 获取 API 密钥
@@ -83,6 +89,14 @@ COINGECKO_API_KEY=your_coingecko_api_key
 1. 访问 [CoinGecko](https://www.coingecko.com/en/api)
 2. 免费版本无需 API Key
 3. 付费版本可获得更高的请求限制
+
+#### PRIVATE_KEY
+1. 浏览器傻姑娘打开MetaMask，选择顶部的当前账户
+2. 点击当前账户右边的三个点
+3. 选择账户详情
+4. 选择Details
+5. 选择查看私钥
+注意：一定不要把私钥泄漏出去
 
 ### 5. 启动开发服务器
 
@@ -130,6 +144,12 @@ src/
 │   └── api.ts            # 区块链数据服务
 ├── store/                 # 状态管理
 │   └── useWalletStore.ts # 钱包状态
+├── types/                 # TS类型
+│   ├── index.ts            # 资产的TS类型定义
+├── hooks/                 # hooks函数
+│   ├── useToast.ts      # Toast hooks
+├── test/                 # 测试
+│   ├── DeFiToken.test.js      # DeFi代币测试
 ├── utils/                 # 工具函数
 │   ├── constants.ts      # 常量配置
 │   └── format.ts         # 格式化函数
@@ -141,6 +161,7 @@ src/
 
 - **Ethereum Mainnet**: 主要支持网络
 - **Sepolia Testnet**: 测试网络支持
+- **Hardhat Local**: Hardhat本地网络支持
 
 ## 🪙 支持的代币
 
@@ -148,9 +169,9 @@ src/
 - **USDC**: USD Coin 稳定币
 - **UNI**: Uniswap 治理代币
 - **LINK**: Chainlink 预言机代币
-- **USDT**: Tether 稳定币
-- **DAI**: MakerDAO 稳定币
-- **WBTC**: Wrapped Bitcoin
+- ~~**USDT**: Tether 稳定币~~
+- ~~**DAI**: MakerDAO 稳定币~~
+- ~~**WBTC**: Wrapped Bitcoin~~
 
 ## 🔒 安全说明
 
