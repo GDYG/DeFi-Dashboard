@@ -2,6 +2,10 @@
 
 现代化的去中心化金融（DeFi）资产管理面板，支持连接钱包查看真实的资产余额和交易记录。
 
+## 📚 更多文档
+
+[📖 Wiki](https://github.com/GDYG/DeFi-Dashboard/wiki)
+
 ## ✨ 功能特性
 
 - 🔗 **钱包连接**: 支持 MetaMask、WalletConnect 等主流钱包
